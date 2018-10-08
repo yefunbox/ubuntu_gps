@@ -8,6 +8,7 @@ void testNmeaStart() {
     int i = 0,j = 0;
     nmea_msg gpsx;
     u8 data[11][100] = {
+    "$GPRMC,022857.00,A,111111111111111111,N,1331355.659,E,21.372,141.52,090918,,,A*58",
     "$GPRMC,022857.00,A,2234.40269,N,11355.65973,E,21.372,141.52,090918,,,A*58",
     "$GPVTG,141.52,T,,M,21.372,N,39.581,K,A*3D",
     "$GPGGA,022857.00,2234.40269,N,11355.65973,E,1,04,2.18,104.4,M,-2.8,M,,*4C",
@@ -22,17 +23,22 @@ void testNmeaStart() {
 
    for(i = 0;i < 11;i++) {
        while(data[i][j]) {
-           GPS_Parser(data[i][j++]);
+           //GPS_Parser(data[i][j]);
+           j++;
            //printf("j = %d\n",j);
        }
    }
-   NMEA_GPRMC_Analysis(&gpsx,data[0]);
-   printf("latitude = %d,longitude = %d\n",gpsx.latitude,gpsx.longitude);
-   printf("latitudeStr = %s\n",gpsx.latitudeStr);
-   printf("data[8] = %s \n",data[8]);
+
+   NMEA_GPRMC_Analysis(&gpsx,data[1]);
+   printf("%02d:%02d:%02d latitude = %d,longitude = %d\n",gpsx.utc.hour,gpsx.utc.min,gpsx.utc.sec,
+                                                          gpsx.latitude,gpsx.longitude);
+   printf("latitudeStr = %s,longitudeStr = %s\n",gpsx.latitudeStr,gpsx.longitudeStr);
+   printf("data[0] = %s \n",data[0]);
    //checkCRC(data[8]);
-   NMEA_StrReplace(data[8],3,gpsx.latitudeStr);
-   NMEA_StrReplace(data[8],5,gpsx.longitudeStr);
-   NMEA_UpdateCRC(data[8]);
-   printf("data[0] = %s\n",data[8]);
+   //NMEA_StrReplace(data[8],3,"012345678910");
+   //NMEA_StrReplace(data[8],5,"555");
+   NMEA_StrReplace(data[0],3,gpsx.latitudeStr);
+   NMEA_StrReplace(data[0],5,gpsx.longitudeStr);
+   NMEA_UpdateCRC(data[0]);
+   printf("data[0] = %s\n",data[0]);
 }

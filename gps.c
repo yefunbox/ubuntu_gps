@@ -8,7 +8,7 @@ void checkCRC(u8 * buffer,u8* crc) {
          result^=buffer[i];
     }
     sprintf(crc,"%x",result);
-    printf("checkCRC 0x%s\n",crc);
+    //printf("checkCRC 0x%s\n",crc);
 }
 //从buf里面得到第cx个逗号所在的位置
 //返回值:0~0XFE,代表逗号所在位置的偏移.
@@ -76,7 +76,7 @@ int NMEA_Str2num(u8 *buf,u8*dx)
 void NMEA_getSubStr(u8 *buf,char* retBuf) {
     char i = 0;
     for(i = 0;;i++) {
-       printf("i%d=%c  ",i,buf[i]);
+       //printf("i%d=%c  ",i,buf[i]);
        if(buf[i] == ',' || buf[i] == '*') {
           retBuf[i] = '\0';
           break;
@@ -84,21 +84,64 @@ void NMEA_getSubStr(u8 *buf,char* retBuf) {
           retBuf[i] = buf[i];
        }
     }
-    printf("NMEA_getSubStr %s\n",retBuf);
+    //printf("NMEA_getSubStr %s\n",retBuf);
 }
-//ddmm.mmmm
-int NMEA_StrReplace(u8 *buf,u8 cx,char* replacebBuf) {
-    u8 posx,i = 0;
-    u8 *p1,dx;
+/*
+**setup为0时，从头开始拷贝，否则从末尾开始拷贝
+**/
+void strcpy(char * dest, const char * src,u8 setup) {// 实现src到dest的复制
+     char i = 0,length;
+     char* p;
+     length = strlen(src);
+     p = src+setup;
 
-    posx=NMEA_Comma_Pos(buf,cx);
-    while(1) {
-        if(replacebBuf[i] == '\0' || buf[posx+i] == ',' || buf[posx+i] == '*') {
-            break;
-        } else {
-            buf[posx+i] = replacebBuf[i];
-        }
-        i++;
+     if(setup == 0) {
+         while(i < length) {  //把src字符串的内容复制到dest下
+              dest[i] = src[i];
+              i++;
+         }
+         dest[length] = '\0';
+     } else {
+         i =  length-1;
+         dest[i+setup] = '\0';
+         while(i >= 0) {       //把src字符串的内容复制到dest下,从末尾开始拷贝
+              p[i] = src[i];
+              //printf("src[%d] = %c\n",i,src[i]);
+              i--;
+         }
+     }
+}
+/*before  xx,aaaaaa,xx  先计算出src.a的length
+            ^      ^
+            |      |
+            p1     p2
+**after   xx,bbb,xx     计算出dest.b的length
+            ^   ^
+            |   |
+            p1  p2
+*/
+int NMEA_StrReplace(u8 *buf,u8 cx,char* replaceBuf) {
+    u8 posx,i = 0;
+    u8 *p1,*p2;
+    char aLength = 0,bLength = 0;
+
+    posx = NMEA_Comma_Pos(buf,cx);
+    aLength = NMEA_Comma_Pos(buf,cx+1) - posx -1;
+    bLength = strlen(replaceBuf);
+    //printf("posx = %d,aLength = %d,bLength = %d \n",posx,aLength,bLength);
+    p1 = buf + posx;
+    p2 = buf + posx + aLength;
+
+    if(aLength == bLength) {
+        
+    } else if(aLength > bLength){
+        strcpy(p1+bLength,p2,0);
+    } else {
+        strcpy(p1+bLength,p2,bLength - aLength);
+    }
+    //printf("buf = %s\n",buf);
+    for(i = 0;i < bLength;i++) {
+        p1[i] = replaceBuf[i];
     }
 
     return 0;
