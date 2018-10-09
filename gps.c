@@ -223,4 +223,23 @@ void NMEA_GPVTG_Analysis(nmea_msg *gpsx,u8 *buf)
     }
 }
 
+//分析GPGGA信息
+//gpsx:nmea信息结构体
+//buf:接收到的GPS数据缓冲区首地址
+void NMEA_GPGGA_Analysis(nmea_msg *gpsx,u8 *buf)
+{
+    u8 *p1,dx;           
+    u8 posx;    
+    p1=(u8*)strstr((const char *)buf,"$GPGGA");
+    posx=NMEA_Comma_Pos(p1,6);                              //得到GPS状态
+    if(posx!=0XFF)gpsx->gpssta=NMEA_Str2num(p1+posx,&dx);   
+    posx=NMEA_Comma_Pos(p1,7);                              //得到用于定位的卫星数
+    if(posx!=0XFF)gpsx->posslnum=NMEA_Str2num(p1+posx,&dx); 
+    posx=NMEA_Comma_Pos(p1,8);                              //HDOP水平精度因子（0.5 - 99.9）
+    if(posx!=0XFF) { 
+        gpsx->hdop=NMEA_Str2num(p1+posx,&dx)/NMEA_Pow(10,dx); //去掉小数,保留整数
+    }
+    posx=NMEA_Comma_Pos(p1,9);                              //得到海拔高度
+    if(posx!=0XFF)gpsx->altitude=NMEA_Str2num(p1+posx,&dx);  
+}
 
