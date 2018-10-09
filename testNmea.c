@@ -45,4 +45,5 @@ void testNmeaStart() {
    NMEA_GPGGA_Analysis(&gpsx,data[3]);
    printf("hdop = %d,gpssta = %d\n",gpsx.hdop,gpsx.gpssta);
 
+   uartMain();
 }

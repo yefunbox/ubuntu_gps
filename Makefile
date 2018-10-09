@@ -1,16 +1,21 @@
-main:  main.o nmea.o testNmea.o gps.o
+main:  main.o nmea.o testNmea.o gps.o uart.o -lpthread
 
 main.o: main.c
-	cc -c main.c
+	gcc -c main.c
 
 nmea.o: nmea.c nmea.h
-	cc -c nmea.c
+	gcc -c nmea.c
 
 testNmea.o: testNmea.c testNmea.h
-	cc -c testNmea.c
+	gcc -c testNmea.c
 
 gps.o: gps.c gps.h
-	cc -c gps.c
+	gcc -c gps.c
+
+
+
+uart.o: uart.c
+	gcc -c uart.c
 
 .PHONY:clean
 clean:
