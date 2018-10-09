@@ -46,4 +46,5 @@ void testNmeaStart() {
    printf("hdop = %d,gpssta = %d\n",gpsx.hdop,gpsx.gpssta);
 
    uartMain();
+   testQueue();
 }

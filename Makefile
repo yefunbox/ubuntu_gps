@@ -1,4 +1,4 @@
-main:  main.o nmea.o testNmea.o gps.o uart.o -lpthread
+main:  main.o nmea.o testNmea.o gps.o uart.o queueManager.o -lpthread
 
 main.o: main.c
 	gcc -c main.c
@@ -12,7 +12,8 @@ testNmea.o: testNmea.c testNmea.h
 gps.o: gps.c gps.h
 	gcc -c gps.c
 
-
+queueManager.o: queueManager.c
+	gcc -c queueManager.c
 
 uart.o: uart.c
 	gcc -c uart.c
