@@ -81,7 +81,7 @@ void doCRC(char c,u8 flag) {
         crcResult ^= c;
     } else if(flag == GPS_PARSE_STATUS_CRC_END) {
         //result = hexToBCD(result);
-         //printf(" BCD=%x\n",crcResult);
+         printf(" BCD=%x\n",crcResult);
     }
     //printf(" c=%c 0x%x,crc=0x%x   ",c,c,result);
 }

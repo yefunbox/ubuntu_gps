@@ -9,7 +9,7 @@
                 2. 修改初始化数据方法
 
 ---------------------------------------------------------*/
-#include "nmeaParse.h"
+#include "nmea.h"
 #include <stdio.h>
 #include <stdlib.h>
 

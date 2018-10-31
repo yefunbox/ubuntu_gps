@@ -4,6 +4,24 @@
 typedef unsigned char u8;
 typedef unsigned short u16;
 
+typedef struct
+{
+    char Mode;		    // A/M [ASCII]
+    char Mode2;	        // 0,1,2,3 [ASCII]
+    u8 SatUsedList[12];	// 使用中的卫星号
+    char PDOP[5];       // 位置精度 0.5-99.9
+    char HDOP[5];       // 水平精度 0.5-99.9
+    char VDOP[5];       // 垂直精度 0.5-99.9
+}struct_GPSGSA;
+
+typedef struct
+{
+    u8 SatID;           // 卫星号
+    u8 Elevation;       // 卫星仰角   00-90 度
+    u16 Azimuth;        // 卫星方位角 000-359 度
+    u8 SNR;             // 讯号噪声比 00-99 dbHz
+}struct_SatInfo;
+
 
 #define NMEA_NULL   0x00        //GPS语句类型
 #define NMEA_GPGGA  0x01

@@ -1,0 +1,7 @@
+#include "stdio.h"
+#include "testNmea.h"
+
+int maidn(int argc, char* argv[]) {
+    testNmeaStart();
+    return 0;
+}

@@ -14,8 +14,8 @@ void CreatQueue(){
 }
 inline void PushQueue(char value){
     if((queue.rear+1)%MAX!=queue.front) {
-        queue.data[queue.rear] = value;
         queue.rear = (queue.rear+1)%MAX;
+        queue.data[queue.rear] = value;
     } else {
         //队列已满
         printf("PushQueue Is Full\n");

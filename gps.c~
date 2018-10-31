@@ -11,14 +11,13 @@ int calcCRC(u8 nmeaData,u8* crc) {
 }
 void checkCRC(u8 * buffer,u8* crc) {
     u8 i,result;
-    printf("checkCRC start c=%c  \n",buffer[1]);
+    printf("checkCRC c=%c  \n",buffer[1]);
     for(result=buffer[1],i=2;buffer[i]!='*';i++) {
          result^=buffer[i];
          printf("c=%c,result=0x%x ",buffer[i],result);
     }
-    
     sprintf(crc,"%x",result);
-    printf("checkCRC end 0x%s\n",crc);
+    //printf("checkCRC 0x%s\n",crc);
 }
 //从buf里面得到第cx个逗号所在的位置
 //返回值:0~0XFE,代表逗号所在位置的偏移.
